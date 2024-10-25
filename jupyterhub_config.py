@@ -59,3 +59,40 @@ c.NativeAuthenticator.open_signup = True
 admin = os.environ.get("JUPYTERHUB_ADMIN")
 if admin:
     c.Authenticator.admin_users = [admin]
+
+
+# Создание групп: DA, DS, DM
+
+c.JupyterHub.load_groups = {
+    'DA': ['ngorbenko', 'ebasaeva', 'nevglevskaya', 'akorzhov'],
+    'DS': ['mkorovin', 'oageeva', 'udanilova', 'edanilova', 'ckalashnikov'],
+    'DM': ['vlyadskaya']
+}
+
+
+# Создание роли для чтения: reader-all
+# Создание роли для запуска и остановки серверов группы DA
+# Создание роли для запуска и остановки серверов группы DS
+
+c.JupyterHub.load_roles = [
+    {
+        'name': 'reader-all',
+        'description': 'Read-only user models',
+        'scopes': ['read:users'],
+        'users': ['vlyadskaya']
+    },
+    {
+        'name': 'server-da',
+        'description': 'Allows parties to start and stop user servers of group DA',
+        'scopes': ['servers'],
+        'users': ['ngorbenko', 'ebasaeva', 'nevglevskaya', 'akorzhov'],
+        'groups': ['DA'],
+    },
+    {
+        'name': 'server-ds',
+        'description': 'Allows parties to start and stop user servers of group DS',
+        'scopes': ['servers'],
+        'users': ['mkorovin', 'oageeva', 'udanilova', 'edanilova', 'ckalashnikov'],
+        'groups': ['DS'],
+    }
+] 
